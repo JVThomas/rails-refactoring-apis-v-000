@@ -17,6 +17,7 @@ describe 'GithubService' do
     before :each do
       @service = GithubService.new
       @service.authenticate!(ENV["GITHUB_CLIENT"], ENV["GITHUB_SECRET"], "20")
+      binding.pry
     end
 
     it "sends the correct POST request" do
@@ -64,10 +65,10 @@ describe 'GithubService' do
     end
   end
 
-  describe '#create_repo' do
+   describe '#create_repo' do
     it "sends the correct POST request" do
       stubbed = stub_request(:post, "https://api.github.com/user/repos").
-        with(body: {"{\"name\":\"a-new-repo\"}"=>nil}, headers: {'Authorization'=>'token 1'})
+        with(body: {"name":"a-new-repo"}.to_json, headers: {'Authorization'=>'token 1'})
 
       service = GithubService.new({"access_token" => "1"})
       service.create_repo("a-new-repo")
